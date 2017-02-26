@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% block content %}
+
+    <h1>Posts of {{ username }}</h1>
+    <hr>
+
+    {% for post in posts %}
+
+        <table>
+            <tr>
+                <td style="padding-right: 20px">
+                    <a href="#"
+                       onclick="document.getElementById('upvoteForm{{ post.id }}').submit()">
+                        <span class="glyphicon glyphicon-triangle-top"
+                              aria-hidden="true"></span>
+                    </a>
+
+                    <p style="margin:0;text-align: center">{{ post.votes }}</p>
+
+                    <a href="#"
+                       onclick="document.getElementById('downvoteForm{{ post.id }}').submit()">
+                        <span class="glyphicon glyphicon-triangle-bottom"
+                              aria-hidden="true"></span>
+                    </a>
+
+                </td>
+
+                <td>
+                    <a href="{{ post.get_full_url }}"><h3
+                            style="display:inline">{{ post.title }}</h3>
+                    </a><br>
+
+                    <h5 style="display:inline">{{ post.get_pretty_date }}</h5>
+                </td>
+            </tr>
+        </table>
+        <hr>
+
+
+        <form id='upvoteForm{{ post.id }}'
+              action="{% url 'posts:upvote' post.id %}"
+              method="post">
+            {% csrf_token %}
+        </form>
+
+        <form id="downvoteForm{{ post.id }}"
+              action="{% url 'posts:downvote' post.id %}"
+              method="post">
+            {% csrf_token %}
+        </form>
+
+    {% endfor %}
+
+
+{% endblock %}
+
+
+
+
+
